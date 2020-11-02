@@ -22,9 +22,9 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
-        self.capacity = capacity
-        self.data = [] * capacity
-        self.entries = 0
+        self.capacity = max(capacity, MIN_CAPACITY)
+        self.storage = [None] * self.capacity
+        self.load = 0
 
 
     def get_num_slots(self):
@@ -38,6 +38,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return len(self.storage)
 
 
     def get_load_factor(self):
@@ -47,6 +48,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.load
 
 
     def fnv1(self, key):
@@ -57,6 +59,15 @@ class HashTable:
         """
 
         # Your code here
+        FNV_offset_basis = 14695981039346656037 
+        FNV_prime = 1099511628211
+        hashed = FNV_offset_basis
+        bytes_to_hash = key.encode()
+        for byte in bytes_to_hash:
+            hashed = hashed * FNV_prime
+            hashed = hashed ^ byte
+        return hashed
+        
 
 
     def djb2(self, key):
@@ -73,8 +84,8 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        #return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
@@ -85,6 +96,11 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        idx = self.hash_index(key)
+        if self.storage[idx] != None:
+            print('collision!')
+        self.storage[idx] = value
+        self.load += 1
 
 
     def delete(self, key):
@@ -96,6 +112,12 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        idx = self.hash_index(key)
+        if self.storage[idx] == None:
+            print('No key!')
+        else:
+            self.storage[idx] = None
+
 
 
     def get(self, key):
