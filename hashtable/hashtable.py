@@ -7,9 +7,13 @@ class HashTableEntry:
         self.value = value
         self.next = None
 
-
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
+"""
+class LinkedList:
+    def __init__(self):
+        self.head = None
+"""
 
 
 class HashTable:
@@ -48,7 +52,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        return self.load
+        #try to keep between 20% and 70%
+        return self.load / self.capacity
 
 
     def fnv1(self, key):
@@ -97,10 +102,28 @@ class HashTable:
         """
         # Your code here
         idx = self.hash_index(key)
-        if self.storage[idx] != None:
-            print('collision!')
-        self.storage[idx] = value
-        self.load += 1
+        # if self.storage[idx] != None:
+        #     print('collision!')
+        # self.storage[idx] = value
+        # self.load += 1
+
+
+        if self.storage[idx] is None:
+            self.storage[idx] = HashTableEntry(key, value)
+            self.load +=1
+        else:
+            current = self.storage[idx]
+            while current.next:
+                if current.key == key:
+                    current.value = value
+                    return
+                current = current.next
+            if current.key == key:
+                current.value = value
+                self.load += 1
+            else:
+                current.next = HashTableEntry(key, value)
+                self.load += 1
 
 
     def delete(self, key):
@@ -113,10 +136,23 @@ class HashTable:
         """
         # Your code here
         idx = self.hash_index(key)
-        if self.storage[idx] == None:
-            print('No key!')
-        else:
-            self.storage[idx] = None
+        # if self.storage[idx] == None:
+        #     print('No key!')
+        # else:
+        #     self.storage[idx] = None
+        current = self.storage[idx]
+
+        if current.key == key:
+            self.storage[idx] = self.storage[idx].next
+            self.load -= 1
+            return
+        while current.next:
+            previous = current
+            current = current.next
+            self.load -= 1
+        return None
+
+
 
 
 
@@ -130,8 +166,20 @@ class HashTable:
         """
         # Your code here
         idx = self.hash_index(key)
-        value = self.storage[idx]
-        return value
+        # value = self.storage[idx]
+        # return value
+        current = self.storage[idx]
+
+        if current is None:
+            return None
+        elif current.key == key:
+            return current.value
+        else:
+            while current.next:
+                current = current.next
+                if current.key == key:
+                    return current.value
+            return None
 
 
     def resize(self, new_capacity):

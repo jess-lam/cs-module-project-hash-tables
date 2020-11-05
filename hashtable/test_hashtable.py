@@ -39,6 +39,7 @@ class TestHashTable(unittest.TestCase):
         self.assertTrue(return_value == "val-8")
         return_value = ht.get("key-9")
         self.assertTrue(return_value == "val-9")
+    
 
     def test_hash_table_pution_overwrites_correctly(self):
         ht = HashTable(8)
@@ -85,7 +86,7 @@ class TestHashTable(unittest.TestCase):
         self.assertTrue(return_value == "new-val-8")
         return_value = ht.get("key-9")
         self.assertTrue(return_value == "new-val-9")
-
+    
     def test_hash_table_removes_correctly(self):
         ht = HashTable(8)
 
@@ -158,6 +159,7 @@ class TestHashTable(unittest.TestCase):
         self.assertTrue(return_value is None)
         return_value = ht.get("key-9")
         self.assertTrue(return_value is None)
+    
 
 if __name__ == '__main__':
     unittest.main()
