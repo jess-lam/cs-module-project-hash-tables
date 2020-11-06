@@ -136,20 +136,40 @@ class HashTable:
         #     print('No key!')
         # else:
         #     self.storage[idx] = None
-        current = self.storage[idx]
 
-        if self.capacity > 8:
-            self.resize(self.capacity)
+        # if self.capacity > 0.7:
+        #     self.resize(self.capacity)
 
-        if current.key == key:
-            self.storage[idx] = self.storage[idx].next
-            self.load -= 1
-            return
-        while current.next:
-            previous = current
-            current = current.next
+        # if current.key == key:
+        #     self.storage[idx] = self.storage[idx].next
+        #     self.load -= 1
+        # else:
+        #     while current.next:
+        #         if current.key != key:
+        #         previous = current
+        #         current = current.next
+        """
             self.load -= 1
         return None
+        """
+
+        if self.storage[idx] is None:
+            return
+        elif self.storage[idx].key == key:
+            if self.storage[idx].next is not None:
+                self.storage[idx] = self.storage[idx].next
+            else:
+                self.storage[idx] = None
+                self.load -= 1
+        else: 
+            current = self.storage[idx]
+            while current:
+                previous = current
+                current = current.next
+                if current is not None:
+                    if current.key == key:
+                        previous.next = current.next
+                
 
 
 
