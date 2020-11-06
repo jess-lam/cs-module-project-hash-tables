@@ -9,11 +9,6 @@ class HashTableEntry:
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
-"""
-class LinkedList:
-    def __init__(self):
-        self.head = None
-"""
 
 
 class HashTable:
@@ -121,6 +116,7 @@ class HashTable:
             if current.key == key:
                 current.value = value
                 self.load += 1
+                #check if you get_load_factor returns a value greater than or equal to 0.7, then invoke resize
             else:
                 current.next = HashTableEntry(key, value)
                 self.load += 1
@@ -141,6 +137,9 @@ class HashTable:
         # else:
         #     self.storage[idx] = None
         current = self.storage[idx]
+
+        if self.capacity > 8:
+            self.resize(self.capacity)
 
         if current.key == key:
             self.storage[idx] = self.storage[idx].next
@@ -190,6 +189,15 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        self.capacity = new_capacity
+        old_storage = self.storage
+        self.storage = [None] * new_capacity
+
+        for item in old_storage:
+            while item is not None:
+                #grab hashtable entry and use existing hashtable method to add them to our new storage
+                self.put(item.key, item.value)
+                item = item.next
 
 
 
