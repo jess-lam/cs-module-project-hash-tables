@@ -1,5 +1,21 @@
 def no_dups(s):
     # Your code here
+    cache = {}
+    string = ""
+    s= s.split()
+    signal = True
+
+    for word in s:
+        if word in cache:
+            cache[word] += 1
+        else:
+            cache[word] = 1
+            if signal:
+                string += word
+                signal = False
+            else:
+                string += ' ' + word
+    return string
 
 
 
