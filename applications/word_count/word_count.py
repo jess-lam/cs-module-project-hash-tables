@@ -1,5 +1,21 @@
 def word_count(s):
     # Your code here
+    our_dict = {}
+    ignore = ['"', ':', ';', ',', '.', '-', '+', '=', '/', '\\',
+               '|', '[', ']', '{', '}', '(', ')', '*', '^', '&']
+    for x in ignore:
+        s=s.replace(x,'')
+
+    string = s.lower()
+
+    for word in string.split():
+        if word in our_dict:
+            our_dict[word] += 1
+        else:
+            our_dict[word] = 1
+    return our_dict
+
+
 
 
 
